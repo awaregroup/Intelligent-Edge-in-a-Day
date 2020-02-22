@@ -1,12 +1,12 @@
 {
-  "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:1",
+  "@id": "urn:msftiotlab:IoTPlugandPlayDemo:1",
   "@type": "CapabilityModel",
   "displayName": {
     "en": "IoT in Action Demo"
   },
   "implements": [
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:DeviceInformation:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:DeviceInformation:1",
       "@type": "InterfaceInstance",
       "name": "DeviceInformation_uo",
       "schema": {
@@ -106,21 +106,21 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:STTS751:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:STTS751:1",
       "@type": "InterfaceInstance",
       "displayName": {
         "en": "Temperature"
       },
       "name": "STTS751",
       "schema": {
-        "@id": "urn:msftwcbiot:TemperatureSensor:1",
+        "@id": "urn:msftiotlab:TemperatureSensor:1",
         "@type": "Interface",
         "displayName": {
           "en": "Temperature"
         },
         "contents": [
           {
-            "@id": "urn:msftwcbiot:TemperatureSensor:Temperature:1",
+            "@id": "urn:msftiotlab:TemperatureSensor:Temperature:1",
             "@type": [
               "Telemetry",
               "SemanticType/Temperature"
@@ -139,21 +139,21 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:HTS221:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:HTS221:1",
       "@type": "InterfaceInstance",
       "displayName": {
         "en": "Humidity"
       },
       "name": "HTS221",
       "schema": {
-        "@id": "urn:msftwcbiot:HumiditySensor:1",
+        "@id": "urn:msftiotlab:HumiditySensor:1",
         "@type": "Interface",
         "displayName": {
           "en": "Humidity"
         },
         "contents": [
           {
-            "@id": "urn:msftwcbiot:HumiditySensor:Humidity:1",
+            "@id": "urn:msftiotlab:HumiditySensor:Humidity:1",
             "@type": [
               "Telemetry",
               "SemanticType/Humidity"
@@ -172,21 +172,21 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:LSM6DSOX:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:LSM6DSOX:1",
       "@type": "InterfaceInstance",
       "displayName": {
         "en": "Accelerometer"
       },
       "name": "LSM6DSOX",
       "schema": {
-        "@id": "urn:msftwcbiot:AccelerometerSensor:1",
+        "@id": "urn:msftiotlab:AccelerometerSensor:1",
         "@type": "Interface",
         "displayName": {
           "en": "Accelerometer"
         },
         "contents": [
           {
-            "@id": "urn:msftwcbiot:AccelerometerSensor:AccXAxis:1",
+            "@id": "urn:msftiotlab:AccelerometerSensor:AccXAxis:1",
             "@type": "Telemetry",
             "description": {
               "en": "Acceleration X axis"
@@ -201,7 +201,7 @@
             "schema": "double"
           },
           {
-            "@id": "urn:msftwcbiot:AccelerometerSensor:AccYAxis:1",
+            "@id": "urn:msftiotlab:AccelerometerSensor:AccYAxis:1",
             "@type": "Telemetry",
             "description": {
               "en": "Acceleration Y axis"
@@ -216,7 +216,7 @@
             "schema": "double"
           },
           {
-            "@id": "urn:msftwcbiot:AccelerometerSensor:AccZAxis:1",
+            "@id": "urn:msftiotlab:AccelerometerSensor:AccZAxis:1",
             "@type": "Telemetry",
             "description": {
               "en": "Acceleration Z axis"
@@ -234,21 +234,21 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:LPS22HH:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:LPS22HH:1",
       "@type": "InterfaceInstance",
       "displayName": {
         "en": "Pressure"
       },
       "name": "LPS22HH",
       "schema": {
-        "@id": "urn:msftwcbiot:PressureSensor:1",
+        "@id": "urn:msftiotlab:PressureSensor:1",
         "@type": "Interface",
         "displayName": {
           "en": "Pressure"
         },
         "contents": [
           {
-            "@id": "urn:msftwcbiot:PressureSensor:Pressure:1",
+            "@id": "urn:msftiotlab:PressureSensor:Pressure:1",
             "@type": [
               "Telemetry",
               "SemanticType/Pressure"
@@ -266,21 +266,21 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:LIS2MDL:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:LIS2MDL:1",
       "@type": "InterfaceInstance",
       "displayName": {
         "en": "Magnetometer"
       },
       "name": "LIS2MDL",
       "schema": {
-        "@id": "urn:msftwcbiot:MagnetoMeterSensor:1",
+        "@id": "urn:msftiotlab:MagnetoMeterSensor:1",
         "@type": "Interface",
         "displayName": {
           "en": "Magnetometer"
         },
         "contents": [
           {
-            "@id": "urn:msftwcbiot:MagnetoMeterSensor:MagX:1",
+            "@id": "urn:msftiotlab:MagnetoMeterSensor:MagX:1",
             "@type": "Telemetry",
             "description": {
               "en": "Magnetometer X Axis"
@@ -295,7 +295,7 @@
             "schema": "double"
           },
           {
-            "@id": "urn:msftwcbiot:MagnetoMeterSensor:MagY:1",
+            "@id": "urn:msftiotlab:MagnetoMeterSensor:MagY:1",
             "@type": "Telemetry",
             "description": {
               "en": "Magnetometer Y Axis"
@@ -310,7 +310,7 @@
             "schema": "double"
           },
           {
-            "@id": "urn:msftwcbiot:MagnetoMeterSensor:MagZ:1",
+            "@id": "urn:msftiotlab:MagnetoMeterSensor:MagZ:1",
             "@type": "Telemetry",
             "description": {
               "en": "Magnetometer Z Axis"
@@ -328,7 +328,7 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:ModelDefinition:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:ModelDefinition:1",
       "@type": "InterfaceInstance",
       "name": "ModelDefinition",
       "schema": {
@@ -368,7 +368,7 @@
       }
     },
     {
-      "@id": "urn:msftwcbiot:IoTPlugandPlayDemo:dyzgcwdw:1",
+      "@id": "urn:msftiotlab:IoTPlugandPlayDemo:dyzgcwdw:1",
       "@type": "InterfaceInstance",
       "name": "ModelInformation_4l2",
       "schema": {
