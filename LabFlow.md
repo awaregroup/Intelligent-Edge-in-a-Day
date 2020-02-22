@@ -1,7 +1,8 @@
 # Lab Steps 
 These are the rough steps for all labs
+
 ---
-## Lab 1: Developer Environment and device OS (15 mins)
+## Lab 1: Dev PC and IoT Device Setup
 
 Dev PC Setup
 - Connect to Lab WiFi
@@ -16,7 +17,7 @@ IoT Device Setup
 - Test sensors 
 
 ---		
-## IoT Central / Plug and Play
+## Lab 2: IoT Central / Plug and Play
 
 Deploy Custom IoT Central App Template
 - Install using link from the App Gallary Page  
@@ -42,7 +43,7 @@ View Data
 - Stop the on device app   
 
 ---
-## IoT Edge and Stream Analytics
+## Lab 3: IoT Edge and Stream Analytics
 
 Create IoT Edge in IoT Central
 - Create IoT Edge Deployment template
@@ -62,7 +63,7 @@ Stream Analytics Offline Edge
 - Can take Edge Action Values trigger output color on screen as feedback loop
 
 ---
-## Custom Vision
+## Lab 4: Custom Vision at the Edge 
 
 Creating and using the model
 - Create model in Custom Vision
