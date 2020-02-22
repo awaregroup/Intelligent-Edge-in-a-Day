@@ -1,4 +1,4 @@
-# Lab Kit Contents 
+# Lab Kit Contents
 
 ## Raspberry Pi4 4GB Model
 
@@ -10,6 +10,6 @@
 
 ## SD Card Reader
 
-## Power Cable 
+## Power Cable
 
-## Stickers 
+## Stickers
