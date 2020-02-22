@@ -1,6 +1,6 @@
 # Intelligent-Edge-in-a-Day
 
-This set of labs will show you how to build and end to end intelligent edge solution.
+This set of labs will show you how to build an end to end intelligent edge solution.
 
 - We wil build a device
 - the we connect the device
