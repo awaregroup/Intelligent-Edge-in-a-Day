@@ -159,7 +159,9 @@ You can set up your development machine to cross compile for Raspberry Pi 4, how
   ```bash
   pi@raspberrypi:~/Intelligent-Edge-in-a-Day/codegen1/cmake $ ./codegen1 
 Error: Time:Sun Feb 23 20:35:18 2020 File:/home/pi/Intelligent-Edge-in-a-Day/codegen1/main.c Func:main Line:222 USAGE: codegen1 [Device ID] [DPS ID Scope] [DPS symmetric key]
-pi@raspberrypi:~/Intelligent-Edge-in-a-Day/codegen1/cmake $   ```
+pi@raspberrypi:~/Intelligent-Edge-in-a-Day/codegen1/cmake
+
+   ```
 
 ## Create Device Identity
 
