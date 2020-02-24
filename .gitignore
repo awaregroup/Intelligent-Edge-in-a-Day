@@ -1,2 +1,3 @@
-./azure-iot-sdk-c
-./cmake
+azure-iot-sdk-c
+cmake
+codegen1
