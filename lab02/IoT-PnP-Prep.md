@@ -1,20 +1,5 @@
 # Prep for IoT PnP
 
-Do this before the training
-
-1. Flash SD Card with Raspbian Buster  
-  2020-02-13-raspbian-buster-lite.zip
-1. Add a empty file called `ssh` file to `boot` partition
-1. Boot RP4 with the SD Card
-1. Run :
-
-```bash
-$REMOTEHOST="pi@[RP4 IP Address]"
-ssh "$REMOTEHOST" 
-
-```
-
-
 ## Requirements
 
 - Windows 10 or Windows Server 2019 1809 or above
@@ -31,33 +16,29 @@ ssh "$REMOTEHOST"
 
     ```powershell
     Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
     ```
-    
+
     Example :
-    
+
     ```powershell
     PS C:\> Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-    
-    Path          :
-    Online        : True
-    RestartNeeded : False
-    
-    PS C:\> Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-    
+
     Path          :
     Online        : True
     RestartNeeded : False
     ```
 
-## Setup Visual Studio Code + Remote-SSH
+## VSCode Extensions
 
-### Install [Remote SSH (Nightly)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh-nightly) extension  
+We will use several extensions.  Please install following extensions.
 
 > [!TIP]  
 > If you already have Production version of (Not Insiders) Visual Studio installed, please make sure you install the extension to Visual Studio Insiders Edition  
 > The Insiders edition has Green Icon while production version has blue icon  
 > ![VSCode-icons](media/vscode-icons.png)  
+
+- [Remote SSH (Nightly)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh-nightly)  
+- [Azure IoT Device Workbench](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.vscode-iot-workbench)
 
 1. Start VSCode Insiders Edition
 1. Open new terminal from [Terminal] Menu -> `New Terminal`  
@@ -65,10 +46,10 @@ ssh "$REMOTEHOST"
     You will see new terminal window in the bottom of screen
     ![vscode-10](media/vscode-10.png)
 
-1. From the Terminal Window, install `Remote-SSH` with :  
+1. From the Terminal Window, install extensions with :  
 
     ```bash
-    code-insiders --install-extension ms-vscode-remote.remote-ssh-nightly
+    code-insiders --install-extension ms-vscode-remote.remote-ssh-nightly --install-extension vsciot-vscode.vscode-iot-workbench
     ```
 
     ![vscode-11](media/vscode-11.png)
@@ -79,13 +60,13 @@ ssh "$REMOTEHOST"
 
     ![vscode-13](media/vscode-13.png)
 
-1. Verify Remote-SSH extension is installed in `Extensions` pane  
+1. Verify extensions are installed in `Extensions` pane  
 
     ![vscode-14](media/vscode-14.png)
 
 ### Set up SSH Key
 
-THis is optional but highly recommended so you do not have to enter passwords repeatedly
+This is optional but highly recommended so you do not have to enter passwords repeatedly
 
 1. Generate SSH Key from VSCode terminal window with :
 
