@@ -172,12 +172,17 @@ Please pull the latest contents from git with :
 
     ![vscode-28](media/vscode-28.png)
 
+## Complete
 
+Your development environment is ready for the rest of lab.
 
+Start [next lab](IoT-PnP-CodeGen.md)
 
-    > [!TIP]  
-    > F1 key is the short cut key to display the command pallette  
-    > Other shortcut keys
-    > - [Windows Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
-    > - [macOS Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
-    > - [Linux Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
+## Reference
+
+> [!TIP]  
+> F1 key is the short cut key to display the command pallette  
+> Other shortcut keys
+> - [Windows Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
+> - [macOS Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+> - [Linux Keyboard Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
