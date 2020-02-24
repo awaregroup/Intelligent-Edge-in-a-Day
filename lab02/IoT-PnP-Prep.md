@@ -172,6 +172,27 @@ Please pull the latest contents from git with :
 
     ![vscode-28](media/vscode-28.png)
 
+## Clone Repository to your Development Machine
+
+Clone lab contents from Github to your development environment
+
+1. Start VSCode Insider
+1. Open local folder  
+    If you are still connected to RP4, disconnect from it
+    ![VSCode-04-1](media/vscode-04-1.png)
+1. In VSCode, click on `Clone Repository` button  
+    If you do not see `Explorer` pane, click on ![VSCode-08](media/vscode-08.png) button on the top left corner
+1. Enter `https://github.com/awaregroup/Intelligent-Edge-in-a-Day` and hit `enter` key
+1. Press `enter` key  
+    ![VSCode-05](media/vscode-05.png)
+1. Select path where you want to clone the repo  
+    This lab assumes you clone to `C:\Repo`
+
+    ![VSCode-05-1](media/vscode-05-1.png)
+
+1. Click Open for the prompt  
+    ![VSCode-06](media/vscode-06.png)
+
 ## Complete
 
 Your development environment is ready for the rest of lab.

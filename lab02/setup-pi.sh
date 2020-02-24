@@ -1,8 +1,10 @@
 #!/bin/bash
 
 sudo apt-get update
+cd ~/Intelligent-Edge-in-a-Day
+git clone https://github.com/Azure/azure-iot-sdk-c --recursive -b public-preview
 
-cd ~/ && \
+
 sudo raspi-config nonint do_expand_rootfs
 sudo raspi-config nonint do_memory_split 16
 sudo raspi-config nonint do_spi 0
