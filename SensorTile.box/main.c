@@ -22,9 +22,6 @@ static const char *certificates = NULL;
 
 static bool iotHubConnected = false;
 
-#define enrollmentGroupPrimaryKey   "ctd15ekEb62o7ydPMobYVfERUPQ3IzPOmTdcrPvdJ2qqRHPDtvFnvD3l/2IBni/o3yIVl5yL/soF2SsgDoicVw=="
-#define enrollmentGroupSecondaryKey "A9J3amHTFCnE5VfG5T8sEV2rpx4kiHO7Mz7edWwMLTPqoewO2QNUhCN7575OysNcbeAUPpSciwaXhIjE7g219w=="
-
 // State of DPS registration process.  We cannot proceed with DPS until we get into the state APP_DPS_REGISTRATION_SUCCEEDED.
 typedef enum APP_DPS_REGISTRATION_STATUS_TAG
 {
