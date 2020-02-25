@@ -132,7 +132,7 @@ You can set up your development machine to cross compile for Raspberry Pi 4, how
     > This may take 3~5 minutes  
     > To save time, Azure IoT C SDK is already cloned to RP4
 
-  ```bashf
+  ```bash
   cd /home/pi/Intelligent-Edge-in-a-Day/codegen1
   mv /home/pi/Intelligent-Edge-in-a-Day/azure-iot-sdk-c .
   # skip clone to save time.  

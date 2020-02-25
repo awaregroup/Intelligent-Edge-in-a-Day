@@ -48,6 +48,8 @@ static char *sasKey;
 // Device Id
 static char *deviceId;
 
+static char *gateway = "";
+
 // TODO: Fill in DIGITALTWIN_DEVICE_CAPABILITY_MODEL_INLINE_DATA if want to make deivce self-describing.
 #define DIGITALTWIN_DEVICE_CAPABILITY_MODEL_INLINE_DATA "{}"
 
@@ -231,14 +233,27 @@ static void setup()
         buff[0] = 0;
         if (secureDeviceTypeForProvisioning == SECURE_DEVICE_TYPE_SYMMETRIC_KEY)
         {
-            snprintf(buff, sizeof(buff),
-                     "HostName=%s;DeviceId=%s;SharedAccessKey=%s",
-                     dpsIotHubUri,
-                     dpsDeviceId,
-// device-first-provisioning Start
-//                     sasKey
-                     deviceSasKey);
-// device-first-provisioning End
+            if (strlen(gateway) == 0)
+            {
+                snprintf(buff, sizeof(buff),
+                        "HostName=%s;DeviceId=%s;SharedAccessKey=%s",
+                        dpsIotHubUri,
+                        dpsDeviceId,
+    // device-first-provisioning Start
+    //                     sasKey
+                        deviceSasKey);
+    // device-first-provisioning End
+            } else {
+                 snprintf(buff, sizeof(buff),
+                        "HostName=%s;DeviceId=%s;SharedAccessKey=%s;GatewayHostName=%s",
+                        dpsIotHubUri,
+                        dpsDeviceId,
+    // device-first-provisioning Start
+    //                     sasKey
+                        deviceSasKey,
+                        gateway);
+    // device-first-provisioning End               
+            }
         }
         else if (secureDeviceTypeForProvisioning == SECURE_DEVICE_TYPE_X509)
         {
@@ -264,6 +279,13 @@ int main(int argc, char *argv[])
         deviceId = argv[1];
         dpsIdScope = argv[2];
         sasKey = argv[3];
+    }
+    else if (argc == 5)
+    {
+        deviceId = argv[1];
+        dpsIdScope = argv[2];
+        sasKey = argv[3];
+        gateway = argv[4];
     }
     else
     {
