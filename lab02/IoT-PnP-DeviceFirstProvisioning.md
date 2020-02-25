@@ -10,9 +10,9 @@ With Device Provisioning Service, the device app can be written in a way to self
 Let's start with clean state.
 
 1. Open Postman and select `5 : Delete Device` and run
-1. Check IoT Central `Codegen HOL API Device` is no longer listed
+1. Verify IoT Central `Codegen HOL API Device` is no longer listed
 1. Select `6 : Delete Device Template` from the Postman collection and run
-1. Check IoT Central `Codegen HOL API Demo` is no longer listed
+1. Verify IoT Central `Codegen HOL API Demo` is no longer listed
 
 ## Modify device code
 
