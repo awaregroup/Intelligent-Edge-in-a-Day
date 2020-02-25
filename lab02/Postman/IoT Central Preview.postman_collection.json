@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "364996b9-b0e6-4baf-afb6-25982d73b959",
+		"_postman_id": "839f0955-a95f-4eae-a4fe-abceedaa3e83",
 		"name": "IoT Central Preview",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -116,7 +116,7 @@
 			"response": []
 		},
 		{
-			"name": "4 : Get Device Crecentials",
+			"name": "4 : Get Device Credentials",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -146,36 +146,46 @@
 			"response": []
 		},
 		{
-			"name": "Get Device Template",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "5 : Delete Device",
 			"request": {
-				"method": "GET",
+				"method": "DELETE",
 				"header": [
 					{
 						"key": "Authorization",
 						"type": "text",
 						"value": "{{APIToken}}"
-					},
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/deviceTemplates/",
+					"raw": "https://{{Url}}.azureiotcentral.com/api/devices/{{DeviceTemplateName}}_device",
+					"protocol": "https",
+					"host": [
+						"{{Url}}",
+						"azureiotcentral",
+						"com"
+					],
+					"path": [
+						"api",
+						"devices",
+						"{{DeviceTemplateName}}_device"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6 : Delete Device Template",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{APIToken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/deviceTemplates/{{DeviceTemplateName}}",
 					"protocol": "https",
 					"host": [
 						"{{Url}}",
@@ -186,7 +196,7 @@
 						"api",
 						"preview",
 						"deviceTemplates",
-						""
+						"{{DeviceTemplateName}}"
 					]
 				}
 			},
