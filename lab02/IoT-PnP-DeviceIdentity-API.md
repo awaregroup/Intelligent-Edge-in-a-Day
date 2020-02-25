@@ -1,19 +1,10 @@
 # Device Identity : RESTful API
 
-There are a few options to connect a device to IoT Central.
+In this section, we will create device identify in IoT Central using RESTful API with Postman to show how to use IoT Central APIs
 
-- Cloud First  
-    Create device identity in Cloud
-- Device First
-    Cloud to create device identity when a new device became online
+## Set up Postman
 
-Let's connect the application with Cloud First approach.  Later on, we will cover Device First Approach.
-
-## Cloud First Connection : API Method
-
-### Set up Postman
-
-IoT Central added API support.  As a result, many operations can be automated using API.
+Before sending RESTful API, let's set up Postman collection and environment
 
 1. Open Postman
 1. Import Collection  
@@ -51,7 +42,7 @@ IoT Central added API support.  As a result, many operations can be automated us
 
     ![postman-03](media/postman-03.png)
 
-### Test API
+## Test API
 
 Let's verify the setting by making a simple API call to IoT Central
 
@@ -61,7 +52,10 @@ Let's verify the setting by making a simple API call to IoT Central
 
 ![postman-04](media/postman-04.png)
 
-### Create Device Template
+## Create Device Template
+
+IoT Central creates and manages devices based on `Device Template`.  Before creating device identity, we need to create `Device Template`.
+With IoT Plug and Play, IoT Central consumes Device Capability Model to create device template.
 
 1. Browse to `Device template` page of IoT Central Application  
     At this point, there is no template
@@ -77,9 +71,9 @@ Let's verify the setting by making a simple API call to IoT Central
 
 ![iotc-24](media/iotc-24.png)
 
-### Create Device Identity
+## Create Device Identity
 
-Now with the template just created, we can create a new device
+Now with the device template just created, we can create a new device
 
 1. From `IoT Cental Preview` collection, click `3 : Create Device`
 1. Send the request
@@ -92,9 +86,9 @@ Now with the template just created, we can create a new device
 
 ![iotc-26](media/iotc-26.png)
 
-### Retrieve device Sas Key
+## Retrieve device Sas Key
 
-Now we have a new device identity.  Retrieve device credential (Sas Key) so we can connect.
+We have a new device identity.  Retrieve information for DPS so we can connect.
 
 1. From `IoT Cental Preview` collection, click `4 : Get Device Credentials`
 1. Send the request
@@ -121,7 +115,7 @@ Now we have a new device identity.  Retrieve device credential (Sas Key) so we c
 
 ## Adding View to IoT Central
 
-The template does not provide views (graphs etc).  Let's add a new view to the template.
+The template does not provide views (graphs etc) by default.  Let's add a new view to the template.
 IoT Central can generate `Default view` based on DCM.  You can customize views based on your needs as well.
 
 1. Navigate to `Device templates` view
@@ -141,3 +135,26 @@ IoT Central can generate `Default view` based on DCM.  You can customize views b
 1. Navigate to the device page.  Now you should see `About` and `Overview` tabs  
 
     ![iotc-31](media/iotc-31.png)
+
+## Complete
+
+You just created a new device and successfully connected to IoT Central.
+
+Within a few minutes, you should see :
+
+- Telemetry (all zeros) 
+- Property values `abc`
+- Status is now `Provisioned`
+- You can send a command from Cloud  
+
+![iotc-10](media/iotc-10.png)
+
+![iotc-11](media/iotc-11.png)
+
+Press `CTRL +  C` to exit app on RP4
+
+Generated code does not contain `device specific code` to retrieve device properties such as model name, memory size, and read sensor data.
+
+Let's add device specific code with `device first` provisioning so you can see real data in IoT Central.
+
+[Next Section](IoT-PnP-DeviceFirstProvisioning.md)
