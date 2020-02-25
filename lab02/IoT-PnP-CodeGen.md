@@ -309,64 +309,6 @@ IoT Central can generate `Default view` based on DCM.  You can customize views b
 
 ## Complete
 
-At this point, the device app code sends zeros for all telemetries.  Properties are all 'abc`.
-As a device developer now you need to add device specific code.
-
-Let's add device specific code and send real data in the next step.
-
-## Reference
-
-### Cloud First Connection : Manual Method
-
-1. Open [IoT Central application](https://apps.azureiotcentral.com/myapps)
-1. Select your IoT Central application
-1. Select `Device templates`
-1. Click on `+` sign
-
-    ![iotc-01](media/iotc-01.png)
-
-1. Scroll down and select `SensorTIle.Box(STEVAL-MKCBOX1V1)` from IoT Plug and Play pre-certified device list  
-1. Click `Next Customize`  
-
-    ![iotc-02](media/iotc-02.png)
-
-1. Click `Create`
-
-    ![iotc-03](media/iotc-03.png)
-
-1. Open `Devices` pane, select `SensorTIle.Box(STEVAL-MKCBOX1V1)`, then click `+ New`  
-
-    ![iotc-04](media/iotc-04.png)
-
-1. Change `Device ID` and `Device Name`, or you can accept default names, then click `Create`  
-
-    ![iotc-05](media/iotc-05.png)
-
-1. Confirm the new device identity is in the devices list  
-
-    ![iotc-06](media/iotc-06.png)
-
-1. Open the device by clicking `Device Name`  
-
-    ![iotc-07](media/iotc-07.png)
-
-1. Click `Connect`  
-
-    > [!NOTE]
-    > Check the status of device is **Registered**  
-
-    ![iotc-08](media/iotc-08.png)
-
-1. Use `ID scope`, `Deivce ID`, and `Primary key` to run the app on RP4
-
-    ![iotc-09](media/iotc-09.png)  
-
-    Example :  
-
-    ```bash
-    ./codegen1 codegen1 0ne00055F84 OZRw8qKC6LbD/UKy0WHtkcg8bUqY602FZF/oZd*/-/-*/*
-    ```
-
 Within a few minutes, you should see :
 
 - Telemetry (all zeros) 
@@ -379,3 +321,13 @@ Within a few minutes, you should see :
 ![iotc-11](media/iotc-11.png)
 
 Press `CTRL +  C` to exit app on RP4
+
+At this point, the device app code sends zeros for all telemetries.  Properties are all 'abc`.
+As a device developer now you need to add device specific code.
+
+Let's add device specific code and send real data in the next step.
+
+## Reference
+
+[Manually create device identity in IoT Central](IoT-PnP-CloudFirstProvision-Manual.md)
+
