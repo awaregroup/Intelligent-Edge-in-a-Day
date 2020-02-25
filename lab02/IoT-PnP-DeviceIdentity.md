@@ -12,7 +12,7 @@ There are two approaches to create device identity and attest the identity.
 
 ## Cloud First  
 
-With Cloud First approach, IoT solution administrator can manage and control the known list of devices, or "White listed" devices.
+With Cloud First approach, IoT solution owner can manage and control the known list of devices, or "White listed" devices.
 
 DPS uses 3 pieces of information :
 
@@ -23,7 +23,7 @@ DPS uses 3 pieces of information :
 - Symmetric Key for the device
     A.k.a. Device key.  Device key is unique to each device id.
 
-IoT solution administrator needs to :
+IoT solution owner needs to :
 
 - Create device identity in Cloud
 - Provide Signature to each device
@@ -47,8 +47,8 @@ End users needs to :
 
 ## Device First
 
-With the device first approach, IoT solution administrator can use the same key for multiple devices and devices can self-register by themselves.
-This approach may work better if the IoT solution administrator has control over device and/or device app (or device firmware).  With this approach, the IoT solution administrator needs to manage single device app (or device firmware image) for each solution.
+With the device first approach, IoT solution owner can use the same key for multiple devices and devices can self-register by themselves.
+This approach may work better if the IoT solution owner has control over device and/or device app (or device firmware).  With this approach, the IoT solution owner needs to manage single device app (or device firmware image) for each solution.
 
 DPS uses 2 pieces of information :
 
@@ -57,7 +57,7 @@ DPS uses 2 pieces of information :
 - Symmetric Key for the solution
     A.k.a. Group key.  Group key is common key for the solution.
 
-IoT solution administrator needs to :
+IoT solution owner needs to :
 
 - Create and manage group Sas key for each IoT solution
 
@@ -69,13 +69,11 @@ End users just needs to turn on the device!
 
 ## Create Device Identity
 
-Let's start with Cloud First approach.  You may choose RESTful API method (New IoT Central Feature), Manual method, or both.
+Let's start with Cloud First approach.
 
-- Could First Approach  
-    - [RESTful API](IoT-PnP-DeviceIdentity-API.md)
-    - [Manual method](IoT-PnP-DeviceIdentity-Manual.md)
+[Next Section](IoT-PnP-DeviceIdentity-Manual.md)
 
-- Device First Approach
+[Go back to top page](readme.md)
 
 ## Reference
 

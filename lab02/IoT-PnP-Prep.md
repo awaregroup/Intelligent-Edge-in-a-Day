@@ -9,7 +9,7 @@
 ## Setup your development environment
 
 1. Install [Git](https://git-scm.com/downloads)  
-    Or you may use your favorite Git client software
+    You may use your favorite Git client software
 1. Install [Postman](https://www.postman.com/downloads/)
 1. Install [Visual Studio Code Insiders Edition](https://code.visualstudio.com/insiders/)
 1. Install OpenSSH to your Windows machine from **Windows Powershell (Admin)** with :  

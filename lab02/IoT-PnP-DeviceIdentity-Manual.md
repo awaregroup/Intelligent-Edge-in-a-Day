@@ -1,7 +1,7 @@
 # Device Identity : Manual Method
 
-This method is more traditional approach.  IoT Solution administrator create device identities before the solution accept new devices.
-With this, The IoT solution administrators have more control over which devices to be a part of their solutions.
+This method is more traditional approach.  IoT solution owner creates device identities before the solution accept new devices.  
+With this, The IoT solution owner has more control over which devices to be a part of the solution.
 
 ## Manually Create device identity for IoT Plug and Play devices in IoT Central
 
@@ -45,6 +45,9 @@ With this, The IoT solution administrators have more control over which devices 
     ![iotc-08](media/iotc-08.png)
 
 1. Use `ID scope`, `Deivce ID`, and `Primary key` to run the app on RP4
+    
+    > [!IMPORTANT]  
+    > **In VSCode with Remote Connection to RP4**
 
     ![iotc-09](media/iotc-09.png)  
 
@@ -66,3 +69,12 @@ Within a few minutes, you should see :
 ![iotc-11](media/iotc-11.png)
 
 Press `CTRL +  C` to exit app on RP4
+
+## Complete
+
+You went through manual operation of creating and managing device templates and device identities.
+Let's perform the same operation with API.
+
+[Next Section](IoT-PnP-Prep-Posman.md)
+
+[Go back to top page](readme.md)
