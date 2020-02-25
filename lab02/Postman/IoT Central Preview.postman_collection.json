@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "839f0955-a95f-4eae-a4fe-abceedaa3e83",
+		"_postman_id": "8b9d3bb1-492b-41ed-a96a-68546d2ca341",
 		"name": "IoT Central Preview",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -84,13 +84,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "{{APIToken}}",
-						"type": "text"
+						"type": "text",
+						"value": "{{APIToken}}"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -157,7 +157,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{Url}}.azureiotcentral.com/api/devices/{{DeviceTemplateName}}_device",
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/devices/{{DeviceTemplateName}}_device",
 					"protocol": "https",
 					"host": [
 						"{{Url}}",
@@ -166,6 +166,7 @@
 					],
 					"path": [
 						"api",
+						"preview",
 						"devices",
 						"{{DeviceTemplateName}}_device"
 					]
@@ -197,6 +198,156 @@
 						"preview",
 						"deviceTemplates",
 						"{{DeviceTemplateName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3fc5901a-595f-49b5-b83b-505f7665d46c",
+						"exec": [
+							"\r",
+							"if (responseCode.code == 200)\r",
+							"{\r",
+							"    pm.sendRequest({\r",
+							"        url: 'https://' + pm.variables.get(\"Url\") + '.azureiotcentral.com/api/preview/devices/' + pm.variables.get(\"DeviceTemplateName\") + '_device',\r",
+							"        method: 'PUT',\r",
+							"        header: {\r",
+							"            'Authorization' : pm.variables.get(\"APIToken\"), \r",
+							"            'Content-Type' : 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"            'displayName': 'Codegen HOL API Device',\r",
+							"            'instanceOf': pm.variables.get(\"DeviceTemplateName\"),\r",
+							"            'simulated': false,\r",
+							"            'approved': true\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (responseCode.code == 200) {\r",
+							"            console.log(\"Create Success\");\r",
+							"        }\r",
+							"        else\r",
+							"        {\r",
+							"            console.log(\"Create Device Error \" + responseCode.code);\r",
+							"        }\r",
+							"    });\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    console.log(\"Create Template Error \" + responseCode.code);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{APIToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"types\": [\r\n        \"DeviceModel\"\r\n    ],\r\n    \"displayName\": \"Codegen HOL API Demo\",\r\n    \"capabilityModel\": {\r\n        \"displayName\": \"STM Azure1 on SensorTile.box\",\r\n        \"@id\": \"urn:st:stbox1:azure1:1\",\r\n        \"@type\": [\r\n            \"CapabilityModel\"\r\n        ],\r\n        \"implements\": [\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:deviceInfo:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"deviceInfo\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Device Information\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:manufacturer:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Company name of the device manufacturer. This could be the same as the name of the original equipment manufacturer (OEM). Ex. Contoso.\",\r\n                            \"displayName\": \"Manufacturer\",\r\n                            \"name\": \"manufacturer\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:model:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Device model name or ID. Ex. Surface Book 2.\",\r\n                            \"displayName\": \"Device model\",\r\n                            \"name\": \"model\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:swVersion:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Version of the software on your device. This could be the version of your firmware. Ex. 1.3.45\",\r\n                            \"displayName\": \"Software version\",\r\n                            \"name\": \"swVersion\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:osName:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Name of the operating system on the device. Ex. Windows 10 IoT Core.\",\r\n                            \"displayName\": \"Operating system name\",\r\n                            \"name\": \"osName\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:processorArchitecture:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Architecture of the processor on the device. Ex. x64 or ARM.\",\r\n                            \"displayName\": \"Processor architecture\",\r\n                            \"name\": \"processorArchitecture\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:processorManufacturer:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Name of the manufacturer of the processor on the device. Ex. Intel.\",\r\n                            \"displayName\": \"Processor manufacturer\",\r\n                            \"name\": \"processorManufacturer\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:totalStorage:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Total available storage on the device in kilobytes. Ex. 2048000 kilobytes.\",\r\n                            \"displayName\": \"Total storage\",\r\n                            \"name\": \"totalStorage\",\r\n                            \"displayUnit\": \"kilobytes\",\r\n                            \"schema\": \"long\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:azureiot:DeviceManagement:DeviceInformation:totalMemory:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Total available memory on the device in kilobytes. Ex. 256000 kilobytes.\",\r\n                            \"displayName\": \"Total memory\",\r\n                            \"name\": \"totalMemory\",\r\n                            \"displayUnit\": \"kilobytes\",\r\n                            \"schema\": \"long\"\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:acc:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"acc\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:accelerometer:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Accelerometer Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:accelerometer:acc_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Accelaration X/Y/Z components\",\r\n                            \"displayName\": \"Acc Value\",\r\n                            \"name\": \"acc_value\",\r\n                            \"displayUnit\": \"mg\",\r\n                            \"schema\": {\r\n                                \"@id\": \"urn:st:accelerometer:acc_value:pknfu5unco:1\",\r\n                                \"@type\": [\r\n                                    \"Object\"\r\n                                ],\r\n                                \"fields\": [\r\n                                    {\r\n                                        \"@id\": \"urn:st:accelerometer:acc_value:pknfu5unco:acc_x:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"acc_x\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:accelerometer:acc_value:pknfu5unco:acc_y:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"acc_y\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:accelerometer:acc_value:pknfu5unco:acc_z:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"acc_z\",\r\n                                        \"schema\": \"double\"\r\n                                    }\r\n                                ]\r\n                            }\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:mag:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"mag\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:magnetometer:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Magnetometer Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:magnetometer:mag_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Magnetometer X/Y/Z components\",\r\n                            \"displayName\": \"Mag Value\",\r\n                            \"name\": \"mag_value\",\r\n                            \"displayUnit\": \"mgauss\",\r\n                            \"schema\": {\r\n                                \"@id\": \"urn:st:magnetometer:mag_value:x0j6_urwdh:1\",\r\n                                \"@type\": [\r\n                                    \"Object\"\r\n                                ],\r\n                                \"fields\": [\r\n                                    {\r\n                                        \"@id\": \"urn:st:magnetometer:mag_value:x0j6_urwdh:mag_x:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"mag_x\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:magnetometer:mag_value:x0j6_urwdh:mag_y:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"mag_y\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:magnetometer:mag_value:x0j6_urwdh:mag_z:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"mag_z\",\r\n                                        \"schema\": \"double\"\r\n                                    }\r\n                                ]\r\n                            }\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:gyro:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"gyro\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:gyroscope:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Gyroscope Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:gyroscope:gyro_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Gyroscope X/Y/Z components\",\r\n                            \"displayName\": \"Gyro Value\",\r\n                            \"name\": \"gyro_value\",\r\n                            \"displayUnit\": \"mdps\",\r\n                            \"schema\": {\r\n                                \"@id\": \"urn:st:gyroscope:gyro_value:6trzdum6g4:1\",\r\n                                \"@type\": [\r\n                                    \"Object\"\r\n                                ],\r\n                                \"fields\": [\r\n                                    {\r\n                                        \"@id\": \"urn:st:gyroscope:gyro_value:6trzdum6g4:gryo_x:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"gryo_x\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:gyroscope:gyro_value:6trzdum6g4:gryo_y:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"gryo_y\",\r\n                                        \"schema\": \"double\"\r\n                                    },\r\n                                    {\r\n                                        \"@id\": \"urn:st:gyroscope:gyro_value:6trzdum6g4:gryo_z:1\",\r\n                                        \"@type\": [\r\n                                            \"SchemaField\"\r\n                                        ],\r\n                                        \"name\": \"gryo_z\",\r\n                                        \"schema\": \"double\"\r\n                                    }\r\n                                ]\r\n                            }\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:temp:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"temp\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:temperature:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Temperature Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:temperature:temp_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Temperature Value\",\r\n                            \"displayName\": \"Temp Value\",\r\n                            \"name\": \"temp_value\",\r\n                            \"schema\": \"double\",\r\n                            \"unit\": \"Units/Temperature/celsius\"\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:press:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"press\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:pressure:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Pressure Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:pressure:press_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Pressure Value\",\r\n                            \"displayName\": \"Press Value\",\r\n                            \"name\": \"press_value\",\r\n                            \"schema\": \"double\",\r\n                            \"unit\": \"Units/Pressure/kiloPascal\"\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:hum:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"hum\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:humidity:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Humidity Sensor\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:humidity:hum_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Humidity Value\",\r\n                            \"displayName\": \"Hum Value\",\r\n                            \"name\": \"hum_value\",\r\n                            \"schema\": \"double\",\r\n                            \"unit\": \"Units/Humidity/percent\"\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:mic:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"mic\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:microphone_level:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Generic Microphone Sound Level\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:microphone_level:mic_level_value:1\",\r\n                            \"@type\": [\r\n                                \"Telemetry\"\r\n                            ],\r\n                            \"comment\": \"Generic Microphone Level\",\r\n                            \"displayName\": \"Microphone Level\",\r\n                            \"name\": \"mic_level_value\",\r\n                            \"displayUnit\": \"dB\",\r\n                            \"schema\": \"double\"\r\n                        }\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"@id\": \"urn:st:stbox1:azure1:firmware:1\",\r\n                \"@type\": [\r\n                    \"InterfaceInstance\"\r\n                ],\r\n                \"name\": \"firmware\",\r\n                \"schema\": {\r\n                    \"@id\": \"urn:st:firmware:1\",\r\n                    \"@type\": [\r\n                        \"Interface\"\r\n                    ],\r\n                    \"displayName\": \"Firmware Command\",\r\n                    \"contents\": [\r\n                        {\r\n                            \"@id\": \"urn:st:firmware:firmware_status:1\",\r\n                            \"@type\": [\r\n                                \"Property\"\r\n                            ],\r\n                            \"description\": \"Firmware Status\",\r\n                            \"displayName\": \"Firmware status\",\r\n                            \"name\": \"firmware_status\",\r\n                            \"schema\": \"string\"\r\n                        },\r\n                        {\r\n                            \"@id\": \"urn:st:firmware:FOTA:1\",\r\n                            \"@type\": [\r\n                                \"Command\"\r\n                            ],\r\n                            \"commandType\": \"synchronous\",\r\n                            \"request\": {\r\n                                \"@id\": \"urn:st:firmware:FOTA:URI_Fota:1\",\r\n                                \"@type\": [\r\n                                    \"SchemaField\"\r\n                                ],\r\n                                \"name\": \"URI_Fota\",\r\n                                \"schema\": \"string\"\r\n                            },\r\n                            \"response\": {\r\n                                \"@id\": \"urn:st:firmware:FOTA:FotaResponse:1\",\r\n                                \"@type\": [\r\n                                    \"SchemaField\"\r\n                                ],\r\n                                \"name\": \"FotaResponse\",\r\n                                \"schema\": {\r\n                                    \"@id\": \"urn:st:firmware:FOTA:FotaResponse:dlooubrff6:1\",\r\n                                    \"@type\": [\r\n                                        \"Object\"\r\n                                    ],\r\n                                    \"fields\": [\r\n                                        {\r\n                                            \"@id\": \"urn:st:firmware:FOTA:FotaResponse:dlooubrff6:firmware_result:1\",\r\n                                            \"@type\": [\r\n                                                \"SchemaField\"\r\n                                            ],\r\n                                            \"name\": \"firmware_result\",\r\n                                            \"schema\": \"string\"\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            },\r\n                            \"description\": \"Firmware Over the Air Update\",\r\n                            \"name\": \"FOTA\"\r\n                        }\r\n                    ]\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/deviceTemplates/{{DeviceTemplateName}}",
+					"protocol": "https",
+					"host": [
+						"{{Url}}",
+						"azureiotcentral",
+						"com"
+					],
+					"path": [
+						"api",
+						"preview",
+						"deviceTemplates",
+						"{{DeviceTemplateName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cleanup IoT Central",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c99b7e39-104f-461e-bc09-2fa1c6e6a29d",
+						"exec": [
+							"if (responseCode.code == 204 || responseCode.code == 404)\r",
+							"{\r",
+							"    pm.sendRequest({\r",
+							"        url: 'https://' + pm.variables.get(\"Url\") + '.azureiotcentral.com/api/preview/deviceTemplates/' + pm.variables.get(\"DeviceTemplateName\"),\r",
+							"        method: 'DELETE',\r",
+							"        header: {\r",
+							"            'Authorization' : pm.variables.get(\"APIToken\")\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (responseCode.code == 204) {\r",
+							"            console.log(\"Delete Success\");\r",
+							"        }\r",
+							"        else\r",
+							"        {\r",
+							"            console.log(\"Delete Template Error \" + responseCode.code);\r",
+							"        }\r",
+							"    });\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    console.log(\"Delete Device Error \" + responseCode.code);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{APIToken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/devices/{{DeviceTemplateName}}_device",
+					"protocol": "https",
+					"host": [
+						"{{Url}}",
+						"azureiotcentral",
+						"com"
+					],
+					"path": [
+						"api",
+						"preview",
+						"devices",
+						"{{DeviceTemplateName}}_device"
 					]
 				}
 			},
