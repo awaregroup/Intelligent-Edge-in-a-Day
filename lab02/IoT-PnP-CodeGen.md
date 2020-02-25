@@ -224,12 +224,23 @@ Let's verify the setting by making a simple API call to IoT Central
 1. Click `Send` button
 1. Verify IoT Central returns successfully with data
 
+![postman-04](media/postman-04.png)
+
 ### Create Device Template
 
-1. From `IoT Cental Preview` collection, click `2 : Create Device Template`
+1. Browse to `Device template` page of IoT Central Application  
+    At this point, there is no template
+
+1. Switch to Postman then from `IoT Cental Preview` collection, click `2 : Create Device Template`
 1. Send the request
 1. Verify Rest API returns success (200 OK)
-1. Browse to `Device templates` page and confirm the device template is created
+1. Browse to `Device templates` page and confirm the device template is created  
+
+    If you do not see the new template, click `Refresh`
+
+![postman-05](media/postman-05.png)
+
+![iotc-24](media/iotc-24.png)
 
 ### Create Device Identity
 
@@ -238,33 +249,30 @@ Now with the template just created, we can create a new device
 1. From `IoT Cental Preview` collection, click `3 : Create Device`
 1. Send the request
 1. Verify Rest API returns success (200 OK)
-1. Browse to `Devices` page and confirm the device template is created
+1. Browse to `Devices` page and confirm the new device  with device id `codegenapidemo_device` is created with status `Registered`
+
+![postman-06](media/postman-06.png)
+
+![iotc-25](media/iotc-25.png)
+
+![iotc-26](media/iotc-26.png)
 
 ### Retrieve device Sas Key
 
 Now we have a new device identity.  Retrieve device credential (Sas Key) so we can connect.
 
-1. From `IoT Cental Preview` collection, click `4 : Get Device Crecentials`
+1. From `IoT Cental Preview` collection, click `4 : Get Device Credentials`
 1. Send the request
 1. Verify Rest API returns success (200 OK)
 1. The API returns `Scope ID` and `Sas Keys`
 
-Example :
+![postman-07](media/postman-07.png)
 
-```json
-{
-    "scopeId": "0ne000C9014",
-    "symmetricKey": {
-        "primaryKey": "pfpk7H810GWk96oat8uEmQ2niiCbD4Ns988M8B87y983898=",
-        "secondaryKey": "pv88zIWiG1KtZCcmI9/u0DrLd3b7y3n3u28jS5B897fd8a9"
-    }
-}
-```
-
-1. Use these device connection information with the app to connect to IoT Central
+1. Use these device connection information with the device app to connect to IoT Central
 
     > [!TIP]  
-    > Device ID is in the response data of `3 : Create Device` API
+    > Device ID is in the response data of `3 : Create Device` API  
+    > if you used the template, the id is `codegenapidemo_device`
 
     Example :  
 
@@ -272,56 +280,34 @@ Example :
     ./codegen1 codegenapidemo_device 0ne000C9014 pfpk7H810GWk96oat8uEmQ2niiCbD4Ns988M8BOan***
     ```
 
-## Cloud First Connection : Manual Method
+1. Once the device app successfully connected to IoT Central application, the device status will change to `Provisioned`
 
-1. Open [IoT Central application](https://apps.azureiotcentral.com/myapps)
-1. Select your IoT Central application
-1. Select `Device templates`
-1. Click on `+` sign
+![iotc-27](media/iotc-27.png)
 
-    ![iotc-01](media/iotc-01.png)
+## Adding View to IoT Central
 
-1. Scroll down and select `SensorTIle.Box(STEVAL-MKCBOX1V1)` from IoT Plug and Play pre-certified device list  
-1. Click `Next Customize`  
+The template does not provide views (graphs etc).  Let's add a new view to the template.
+IoT Central can generate `Default view` based on DCM.  You can customize views based on your needs as well.
 
-    ![iotc-02](media/iotc-02.png)
+1. Navigate to `Device templates` view
+1. Click on `Codegen HOL API Demo`
+1. Select `View` then click `Generate default views`  
 
-1. Click `Create`
+    ![iotc-28](media/iotc-28.png)
 
-    ![iotc-03](media/iotc-03.png)
+1. Click on `Generate default dashboard view(s)`
 
-1. Open `Devices` pane, select `SensorTIle.Box(STEVAL-MKCBOX1V1)`, then click `+ New`  
+    ![iotc-29](media/iotc-29.png)
 
-    ![iotc-04](media/iotc-04.png)
+1. Click on `Publish` for the change to take effect  
 
-1. Change `Device ID` and `Device Name`, or you can accept default names, then click `Create`  
+    ![iotc-30](media/iotc-30.png)
 
-    ![iotc-05](media/iotc-05.png)
+1. Navigate to the device page.  Now you should see `About` and `Overview` tabs  
 
-1. Confirm the new device identity is in the devices list  
+    ![iotc-31](media/iotc-31.png)
 
-    ![iotc-06](media/iotc-06.png)
-
-1. Open the device by clicking `Device Name`  
-
-    ![iotc-07](media/iotc-07.png)
-
-1. Click `Connect`  
-
-    > [!NOTE]
-    > Check the status of device is **Registered**  
-
-    ![iotc-08](media/iotc-08.png)
-
-1. Use `ID scope`, `Deivce ID`, and `Primary key` to run the app on RP4
-
-    ![iotc-09](media/iotc-09.png)  
-
-    Example :  
-
-    ```bash
-    ./codegen1 codegen1 0ne00055F84 OZRw8qKC6LbD/UKy0WHtkcg8bUqY602FZF/oZd*/-/-*/*
-    ```
+## Complete
 
 Within a few minutes, you should see :
 
@@ -335,3 +321,13 @@ Within a few minutes, you should see :
 ![iotc-11](media/iotc-11.png)
 
 Press `CTRL +  C` to exit app on RP4
+
+At this point, the device app code sends zeros for all telemetries.  Properties are all 'abc`.
+As a device developer now you need to add device specific code.
+
+Let's add device specific code and send real data in the next step.
+
+## Reference
+
+[Manually create device identity in IoT Central](IoT-PnP-CloudFirstProvision-Manual.md)
+
