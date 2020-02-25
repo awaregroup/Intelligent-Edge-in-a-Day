@@ -65,4 +65,9 @@ Furthermore, with IoT Plug and Play, cloud solution can understand devices' capa
 
 ## Complete
 
-You just built a device app that can provision without first creating the device identity in Cloud.
+You just built a device app that can provision without first creating the device identity in Cloud
+
+Look for additional code in :
+
+- main.c for Device First provisioning
+- azure1_impl.c/h for device specific code
