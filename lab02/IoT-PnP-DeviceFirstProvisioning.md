@@ -14,20 +14,24 @@ Let's start with clean state.
 1. Select `6 : Delete Device Template` from the Postman collection and run
 1. Verify IoT Central `Codegen HOL API Demo` is no longer listed
 
+Or
+
+1. Run `Cleanup IoT Central` Postman request
+
 ## Modify device code
 
 You can generate device Sas key from device id and groups Sas key.  
 
 > [!IMPORTANT]  
-> The groupd sas key should be saved in secure location
+> The group sas key should be saved in secure location for real production device
 
 Let's add code to generate a device sas key from the group sas key.  The the generate device Sas key, we can automate the device provisioning.
 Furthermore, with IoT Plug and Play, cloud solution can understand devices' capabilities and characteristics.
 
-1. Copy `main.c` and replace from `DeviceFirstProvision`  
+1. Copy and replace `main.c`, `azure1_impl.c`, `azure1_impl.h`, `pnp_device.c`, and `pnp_device.h` from `DeviceFirstProvision`  
 
     ```bash
-    cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceFirstProvision/main.c ./main.c
+    cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceFirst/* ~/Intelligent-Edge-in-a-Day/codegen1
     ```
 
 1. Re-compile with :  
@@ -57,9 +61,13 @@ Furthermore, with IoT Plug and Play, cloud solution can understand devices' capa
     ```
 
 1. Verify the new device is now provisioned and connected in IoT Central application
+1. Add view and verify you can see telemetry data such as Temperature and Property Data
 
 ## Complete
 
-You just built a device app that can provision without first creating the device identity in Cloud.
+You just built a device app that can provision without first creating the device identity in Cloud
 
-Let's add device specific code so you can send sensor data in [the next step](IoT-PnP-DeviceCode.md).
+Look for additional code in :
+
+- main.c for Device First provisioning
+- azure1_impl.c/h for device specific code
