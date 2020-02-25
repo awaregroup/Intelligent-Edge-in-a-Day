@@ -31,7 +31,7 @@ Furthermore, with IoT Plug and Play, cloud solution can understand devices' capa
 1. Copy and replace `main.c`, `azure1_impl.c`, `azure1_impl.h`, `pnp_device.c`, and `pnp_device.h` from `DeviceFirstProvision`  
 
     ```bash
-    cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceFirstProvision/* ~/Intelligent-Edge-in-a-Day/codegen1
+    cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceFirst/* ~/Intelligent-Edge-in-a-Day/codegen1
     ```
 
 1. Re-compile with :  
