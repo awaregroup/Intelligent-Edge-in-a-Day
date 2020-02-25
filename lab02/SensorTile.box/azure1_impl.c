@@ -8,8 +8,10 @@
  *    - process device command
  *
  * Generated Date: 2/24/2020
+ * Modified by Daisuke Nakahara
+ *    - add ST SensorTile.Box support
+ *    - add Windows and Linux support
  *******************************************************************************************/
-
 #include "azure1_impl.h"
 #include "utilities/digitaltwin_serializer.h"
 #include "utilities/deviceinfo_interface.h"
@@ -24,12 +26,18 @@
 
 #define Payload_Buffer_Size 256
 
+#ifdef WIN32
+static char strNull[] = "BIOS Data Empty";
+#else
 static char osName[Payload_Buffer_Size] = "Unknown";
 static char osVer[Payload_Buffer_Size] = "Unknown";
 static char procArch[Payload_Buffer_Size] = "Unknown";
 static char procModel[Payload_Buffer_Size] = "Unknown";
 static char procManufacture[Payload_Buffer_Size] = "Unknown";
 static long memTotal = 0;
+#endif
+
+static unsigned char PresString[45] = "Unknown";
 
 unsigned char FEndOfFrame = TMsg_EOF;
 unsigned char FBuffer[FBufferMaxLen];
@@ -74,6 +82,18 @@ void ReportProperty_Error_Callback(const char* interfaceName, const char* proper
 
 char* DeviceInfo_Property_GetManufacturer()
 {
+#ifdef WIN32
+    if (pSMBIOS == NULL)
+    {
+        pSMBIOS = ReadSMBiosData();
+    }
+
+    if (pSMBIOS)
+    {
+        return GetManufacturer(pSMBIOS);
+    }
+	return "Unknown";
+#else
     FILE *cpuinfo = fopen("/proc/cpuinfo", "r");
     char line[256];
     char tmp1[256];
@@ -87,18 +107,30 @@ char* DeviceInfo_Property_GetManufacturer()
             if((strcmp(tmp1,"Hardware") == 0))
             {
                 snprintf(procManufacture, Payload_Buffer_Size, "%s", tmp2);
-                printf("Manufacturer %s\r\n", tmp2);
+                //printf("Manufacturer %s\r\n", tmp2);
                 break;
             }
         }
         fclose(cpuinfo);
     }
-
     return procManufacture;
+#endif
 }
 
 char* DeviceInfo_Property_GetModel()
 {
+#ifdef WIN32
+    if (pSMBIOS == NULL)
+    {
+        pSMBIOS = ReadSMBiosData();
+    }
+
+    if (pSMBIOS)
+    {
+        return GetSmbiosProductName(pSMBIOS);
+    }
+	return "Unknown";
+#else
     FILE *cpuinfo;
     char line[256];
     char tmp1[256];
@@ -112,18 +144,30 @@ char* DeviceInfo_Property_GetModel()
             if (strcmp(tmp1,"Model") == 0)
             {
                 snprintf(procModel, Payload_Buffer_Size, "%s", tmp2);
-                printf("Model %s\r\n", tmp2);
+                //printf("Model %s\r\n", tmp2);
                 break;
             }
         }
         fclose(cpuinfo);
     }
-
     return procModel;
+#endif
 }
 
 char* DeviceInfo_Property_GetSwVersion()
 {
+#ifdef WIN32
+    if (pSMBIOS == NULL)
+    {
+        pSMBIOS = ReadSMBiosData();
+    }
+
+    if (pSMBIOS)
+    {
+        return GetSmbiosVersion(pSMBIOS);
+    }
+	return "Unknown";
+#else
     struct utsname* buffer;
 
     buffer = (struct utsname*) malloc(sizeof(struct utsname));
@@ -133,10 +177,14 @@ char* DeviceInfo_Property_GetSwVersion()
     }
 
     return osVer;
+#endif
 }
 
 char* DeviceInfo_Property_GetOsName()
 {
+#ifdef WIN32
+    return "Windows 10";
+#else
     struct utsname* buffer;
 
     buffer = (struct utsname*) malloc(sizeof(struct utsname));
@@ -145,10 +193,28 @@ char* DeviceInfo_Property_GetOsName()
     }
 
     return osName;
+#endif
 }
 
 char* DeviceInfo_Property_GetProcessorArchitecture()
 {
+#ifdef WIN32
+    SYSTEM_INFO siSysInfo;
+    GetSystemInfo(&siSysInfo);
+
+    switch (siSysInfo.wProcessorArchitecture)
+    {
+        case PROCESSOR_ARCHITECTURE_INTEL:
+            return "x86";
+        case PROCESSOR_ARCHITECTURE_AMD64:
+            return "x64";
+        case PROCESSOR_ARCHITECTURE_ARM:
+            return "ARM";
+        case PROCESSOR_ARCHITECTURE_ARM64:
+            return "ARM64";
+    }
+	return "Unknown";
+#else
     struct utsname* buffer;
 
     buffer = (struct utsname*) malloc(sizeof(struct utsname));
@@ -157,10 +223,23 @@ char* DeviceInfo_Property_GetProcessorArchitecture()
     }
 
     return procArch;
+#endif
 }
 
 char* DeviceInfo_Property_GetProcessorManufacturer()
 {
+#ifdef WIN32
+    if (pSMBIOS == NULL)
+    {
+        pSMBIOS = ReadSMBiosData();
+    }
+
+    if (pSMBIOS)
+    {
+        return GetProcessorManufacturer(pSMBIOS);
+    } 
+	return "Unknown";
+#else	
     FILE *cpuinfo;
     char line[256];
     char tmp1[256];
@@ -174,7 +253,7 @@ char* DeviceInfo_Property_GetProcessorManufacturer()
             if((strcmp(tmp1,"Hardware") == 0))
             {
                 snprintf(procManufacture, Payload_Buffer_Size, "%s", tmp2);
-                printf("Manufacturer %s\r\n", tmp2);
+                //printf("Manufacturer %s\r\n", tmp2);
                 break;
             }
         }
@@ -182,10 +261,45 @@ char* DeviceInfo_Property_GetProcessorManufacturer()
     }
 
     return procManufacture;
+#endif
 }
 
 long DeviceInfo_Property_GetTotalStorage()
 {
+#ifdef WIN32
+    HANDLE hDisk;
+    DISK_GEOMETRY geo = { 0 };
+    DWORD bReturned = 0;
+    ULONGLONG diskSize = 0;
+
+    hDisk = CreateFile("\\\\.\\PhysicalDrive0",          // drive to open
+                        0,                // no access to the drive
+                        FILE_SHARE_READ | // share mode
+                        FILE_SHARE_WRITE, 
+                        NULL,             // default security attributes
+                        OPEN_EXISTING,    // disposition
+                        0,                // file attributes
+                        NULL);  
+
+	if (hDisk != INVALID_HANDLE_VALUE)
+	{
+		DeviceIoControl(
+			hDisk,              // handle to device
+			IOCTL_DISK_GET_DRIVE_GEOMETRY, // dwIoControlCode
+			NULL,                          // lpInBuffer
+			0,                             // nInBufferSize
+			(LPVOID)&geo,          // output buffer
+			(DWORD)sizeof(geo),        // size of output buffer
+			(LPDWORD)&bReturned,     // number of bytes returned
+			NULL);
+
+		diskSize = geo.Cylinders.QuadPart * (ULONG)geo.TracksPerCylinder *
+				(ULONG)geo.SectorsPerTrack * (ULONG)geo.BytesPerSector;
+		CloseHandle(hDisk);
+	}
+    return (long)(diskSize / 1024);
+
+#else
     FILE *disksize;
     long size = 0;
     char line[256];
@@ -205,10 +319,17 @@ long DeviceInfo_Property_GetTotalStorage()
     }
 
     return size;
+#endif
 }
 
 long DeviceInfo_Property_GetTotalMemory()
 {
+#ifdef WIN32
+    ULONGLONG ulMemory = 0;
+
+    GetPhysicallyInstalledSystemMemory(&ulMemory);
+    return (long)(ulMemory / 1024);
+#else
     FILE *meminfo;
     char line[256];
     char tmp1[256];
@@ -223,7 +344,7 @@ long DeviceInfo_Property_GetTotalMemory()
             if((strcmp(tmp1,"MemTotal:") == 0))
             {
                 memTotal = strtod(tmp2, NULL);
-                printf("Total Memory %s\r\n", tmp2);
+                //printf("Total Memory %s\r\n", tmp2);
                 break;
             }
         }
@@ -231,12 +352,14 @@ long DeviceInfo_Property_GetTotalMemory()
     }
 
     return memTotal;
+#endif
 }
 
 char* Firmware_Property_GetFirmware_status()
 {
-    // TODO: provide implementation here
-    return "abc";
+	Get_PresentationString(hComm, 43, PresString);
+	printf("==================== %s\r\n", PresString);
+    return PresString;
 }
 
 DIGITALTWIN_COMMAND_RESULT Firmware_Command_FOTA(char* URI_Fota, FIRMWARE_FOTA_FotaResponse* response, unsigned int* statusCode)
@@ -261,7 +384,9 @@ void Acc_Telemetry_ReadAcc_value(ACC_ACC_VALUE * acc_value)
     acc_value->acc_x = (double)SensorDataCache.accx;
     acc_value->acc_y = (double)SensorDataCache.accy;
     acc_value->acc_z = (double)SensorDataCache.accz;
+#ifdef DEBUG
     printf("Acc x %f y %f z %f\r\n", acc_value->acc_x, acc_value->acc_y, acc_value->acc_z);
+#endif
 }
 
 void Mag_Telemetry_ReadMag_value(MAG_MAG_VALUE * mag_value)
@@ -269,7 +394,9 @@ void Mag_Telemetry_ReadMag_value(MAG_MAG_VALUE * mag_value)
     mag_value->mag_x = (double)SensorDataCache.magx;
     mag_value->mag_y = (double)SensorDataCache.magy;
     mag_value->mag_z = (double)SensorDataCache.magz;
+#ifdef DEBUG
     printf("Mag x %f y %f z %f\r\n", mag_value->mag_x, mag_value->mag_y, mag_value->mag_z);
+#endif
 }
 
 void Gyro_Telemetry_ReadGyro_value(GYRO_GYRO_VALUE * gyro_value)
@@ -277,30 +404,37 @@ void Gyro_Telemetry_ReadGyro_value(GYRO_GYRO_VALUE * gyro_value)
     gyro_value->gryo_x = (double)SensorDataCache.gyrox;
     gyro_value->gryo_y = (double)SensorDataCache.gyroy;
     gyro_value->gryo_z = (double)SensorDataCache.gyroz;
+#ifdef DEBUG
     printf("Gyro x %f y %f z %f\r\n", gyro_value->gryo_x, gyro_value->gryo_y, gyro_value->gryo_z);
+#endif
 }
 
 double Temp_Telemetry_ReadTemp_value()
 {
+#ifdef DEBUG
     printf("temperature %f\r\n", SensorDataCache.temperature);
+#endif
     return SensorDataCache.temperature;
 }
 
 double Press_Telemetry_ReadPress_value()
 {
+#ifdef DEBUG
     printf("Pressure %f\r\n", SensorDataCache.pressure);
+#endif
     return SensorDataCache.pressure;
 }
 
 double Hum_Telemetry_ReadHum_value()
 {
+#ifdef DEBUG
     printf("humidity %f\r\n", SensorDataCache.humidity);
+#endif
     return SensorDataCache.humidity;
 }
 
 double Mic_Telemetry_ReadMic_level_value()
 {
-    // TODO: provide implementation here
     return 0.0;
 }
 
@@ -332,10 +466,94 @@ int Send_StartDataStreaming(int hComm, uint8_t* startingInfo)
 	return ReadCmdResponse(hComm, STEVAL_IDI001V1_ADDR, CMD_Start_Data_Streaming, sizeof(TMsg), NULL);
 }
 
+#ifdef WIN32
+HANDLE InitializeSensorTile(const char* comPort)
+{
+	HANDLE hComm = INVALID_HANDLE_VALUE;
+	unsigned char PresString[45] = { 0 };
+	UINT32 sensors = 0x77;
+	DCB dcbSerialParams = { 0 };
+	COMMTIMEOUTS ComTO = { 0 };
+	char comPortPath[256];
+
+	LogInfo("Connecting to Sensortile.Box");
+
+	sprintf(comPortPath, "\\\\.\\COM%s", comPort);
+
+	hComm = CreateFile(comPortPath,
+		GENERIC_READ | GENERIC_WRITE,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		0,
+		NULL);
+
+	if (hComm == INVALID_HANDLE_VALUE)
+	{
+		LogError("Error in opening serial port %s\r\n", comPort);
+		goto ErrorReturn;
+	}
+
+
+	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+
+	if (!GetCommState(hComm, &dcbSerialParams))
+	{
+		LogError("Error GetCommState");
+		goto ErrorReturn;
+	}
+
+	dcbSerialParams.BaudRate = CBR_115200;
+	dcbSerialParams.ByteSize = 8;
+	dcbSerialParams.StopBits = ONESTOPBIT;
+	dcbSerialParams.Parity = NOPARITY;
+
+	SetCommState(hComm, &dcbSerialParams);
+
+	ComTO.ReadTotalTimeoutConstant = 10;
+	ComTO.ReadIntervalTimeout = 0;
+	ComTO.ReadTotalTimeoutMultiplier = 0;
+
+	if (!GetCommTimeouts(hComm, &ComTO)) {
+		goto ErrorReturn;
+	}
+
+	ComTO.ReadTotalTimeoutConstant = 10;
+	ComTO.ReadIntervalTimeout = 0;
+	ComTO.ReadTotalTimeoutMultiplier = 0;
+
+	if (!SetCommTimeouts(hComm, &ComTO)) {
+		goto ErrorReturn;
+	}
+
+	if (!SetCommMask(hComm, EV_RXCHAR)) {
+		goto ErrorReturn;
+	}
+
+	Send_StopDataStreaming(hComm);
+
+	if (Send_Ping(hComm) < 0)
+	{
+		goto ErrorReturn;
+	}
+
+	Get_PresentationString(hComm, 43, PresString);
+
+	return hComm;
+
+ErrorReturn:
+
+	if (hComm != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(hComm);
+	}
+
+	return INVALID_HANDLE_VALUE;
+}
+#else
 int InitializeSensorTile(const char* comPort)
 {
     struct termios tty;
-    unsigned char PresString[45] = { 0 };
     int err;
     pthread_t tid;
 
@@ -343,8 +561,6 @@ int InitializeSensorTile(const char* comPort)
     if (hComm < 0) {
         printf("Error %i from open: %s\n", errno, strerror(errno));
     }
-
-    printf("************** Serial Port Opened\r\n");
 
     memset(&tty, 0, sizeof tty);
 
@@ -370,16 +586,6 @@ int InitializeSensorTile(const char* comPort)
     tty.c_cc[VMIN]  = 0;
     tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
 
-    // tty.c_cflag &= ~PARENB; 
-    // tty.c_cflag &= ~CSTOPB;
-    // tty.c_cflag &= ~CRTSCTS;
-    // tty.c_cflag |= CREAD | CLOCAL;
-    // tty.c_cc[VTIME] = 0;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    // tty.c_cc[VMIN] = 0;
-    // tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL);
-    // tty.c_oflag &= ~OPOST;
-    // tty.c_oflag &= ~ONLCR;
-
     cfsetispeed(&tty, B115200);
     cfsetospeed(&tty, B115200);
 
@@ -387,22 +593,9 @@ int InitializeSensorTile(const char* comPort)
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
 
+    Send_StopDataStreaming(hComm);
 
-    printf("Sending Stop\r\n");
-
-    //Send_StopDataStreaming(hComm);
-
-    printf("Sending Ping\r\n");
-
-	// if (Send_Ping(hComm) < 0)
-	// {
-	// 	printf("Ping error \n");
-	// }
-
-    printf("Getting string\r\n");
-    Get_PresentationString(hComm, 43, PresString);
-
-    printf("Pres String %s\r\n", PresString);
+	Get_PresentationString(hComm, 43, PresString);
 
     err = pthread_create(&tid, NULL, &SensorReadThread, NULL);
     if (err != 0)
@@ -412,6 +605,8 @@ int InitializeSensorTile(const char* comPort)
 
     return hComm;
 }
+
+#endif
 
 int ReadDataStreaming(int hComm, SENSOR_DATA* sensorData)
 {
@@ -716,7 +911,7 @@ void* SensorReadThread(void *arg)
 		if (ReadDataStreaming(hComm, &sensorData) > 0)
 		{
 			flag = sensorData.flag;
-			printf(" =============== flag %x\r\n", flag);
+
 			if ((flag & 1U) == 1U)
 			{
 				(void)memcpy((void*)&accx, &sensorData.accx, sizeof(unsigned int));
@@ -785,3 +980,206 @@ void* SensorReadThread(void *arg)
 
     Send_StopDataStreaming(hComm);
 }
+
+#ifdef WIN32
+
+PRAW_SMBIOS_DATA ReadSMBiosData()
+{
+    DWORD length;
+    const BYTE sigByte[] = { 'B', 'M', 'S', 'R' };
+    const DWORD Signature = *((DWORD*)sigByte);
+    LPBYTE pRawSMBIOS = NULL;
+
+    length = GetSystemFirmwareTable(Signature, 0, NULL, 0);
+
+	pRawSMBIOS = (LPBYTE) malloc(length);
+	if (pRawSMBIOS)
+	{
+		GetSystemFirmwareTable(Signature, 0, pRawSMBIOS, length);
+
+		const PRAW_SMBIOS_DATA pSMBIOS = (PRAW_SMBIOS_DATA)pRawSMBIOS;
+		// printf("SMBIOS version:%d.%d\n", pSMBIOS->SMBIOSMajorVersion, pSMBIOS->SMBIOSMinorVersion);
+		// printf("DMI Revision:%x\n", pSMBIOS->DmiRevision);
+		// printf("Total length: %d\n", pSMBIOS->Length);
+		// printf("DMI at address %p\n", &pSMBIOS->SMBIOSTableData);
+        return pSMBIOS;
+	}
+	else
+		LogError("Can not allocate memory for recevice SMBIOS/DMI table\n");
+
+	return NULL;
+}
+
+char* FindString(char* str, UINT i)
+{
+    static char strNull[] = "BIOS Data Empty";
+
+    if (0 == i || 0 == *str) return strNull;
+
+    while (--i)
+    {
+        str += strlen((char*)str) + 1;
+    }
+    return str;
+}
+
+char* toPointString(void* p)
+{
+    return (char*)p + ((SMBIOS_HEADER*)p)->Length;
+}
+
+char* GetManufacturer(PRAW_SMBIOS_DATA pSMBIOS)
+{
+    LPBYTE ptr = (LPBYTE)(&pSMBIOS->SMBIOSTableData);
+    const LPBYTE pBIOSEnd = ptr + pSMBIOS->Length;
+    PSMBIOS_HEADER pHeader;
+
+    for (;;) {
+        pHeader = (PSMBIOS_HEADER)ptr;
+
+        if (pHeader->Type == 1)
+        {
+            PSMBIOS_SYSTEM_INFO pSystem = (PSMBIOS_SYSTEM_INFO)pHeader;
+            char* str = toPointString(pHeader);
+            return FindString(str, pSystem->Manufacturer);
+        }
+
+        if ((pHeader->Type == 127) && (pHeader->Length == 4))
+            break; // last avaiable tables
+
+        LPBYTE nextOffset = ptr + pHeader->Length; // point to struct end
+        while (0 != (*nextOffset | *(nextOffset + 1))) {
+            nextOffset++; // skip string area
+        }
+        nextOffset += 2;
+        if (nextOffset >= pBIOSEnd)
+            break;
+        ptr = nextOffset;
+    }
+    return strNull;
+}
+
+char* GetProductName(PRAW_SMBIOS_DATA pSMBIOS)
+{
+    LPBYTE ptr = (LPBYTE)(&pSMBIOS->SMBIOSTableData);
+    const LPBYTE pBIOSEnd = ptr + pSMBIOS->Length;
+    PSMBIOS_HEADER pHeader;
+
+    for (;;) {
+        pHeader = (PSMBIOS_HEADER)ptr;
+
+        if (pHeader->Type == 1)
+        {
+            PSMBIOS_SYSTEM_INFO pSystem = (PSMBIOS_SYSTEM_INFO)pHeader;
+            char* str = toPointString(pHeader);
+            return FindString(str, pSystem->ProductName);
+        }
+
+        if ((pHeader->Type == 127) && (pHeader->Length == 4))
+            break; // last avaiable tables
+
+        LPBYTE nextOffset = ptr + pHeader->Length; // point to struct end
+        while (0 != (*nextOffset | *(nextOffset + 1))) {
+            nextOffset++; // skip string area
+        }
+        nextOffset += 2;
+        if (nextOffset >= pBIOSEnd)
+            break;
+        ptr = nextOffset;
+    }
+    return strNull;
+}
+
+char* GetSmbiosVersion(PRAW_SMBIOS_DATA pSMBIOS)
+{
+    LPBYTE ptr = (LPBYTE)(&pSMBIOS->SMBIOSTableData);
+    const LPBYTE pBIOSEnd = ptr + pSMBIOS->Length;
+    PSMBIOS_HEADER pHeader;
+
+    for (;;) {
+        pHeader = (PSMBIOS_HEADER)ptr;
+
+        if (pHeader->Type == 1)
+        {
+            PSMBIOS_SYSTEM_INFO pSystem = (PSMBIOS_SYSTEM_INFO)pHeader;
+            char* str = toPointString(pHeader);
+            return FindString(str, pSystem->Version);
+        }
+
+        if ((pHeader->Type == 127) && (pHeader->Length == 4))
+            break; // last avaiable tables
+
+        LPBYTE nextOffset = ptr + pHeader->Length; // point to struct end
+        while (0 != (*nextOffset | *(nextOffset + 1))) {
+            nextOffset++; // skip string area
+        }
+        nextOffset += 2;
+        if (nextOffset >= pBIOSEnd)
+            break;
+        ptr = nextOffset;
+    }
+    return strNull;
+}
+
+char* GetSmbiosProductName(PRAW_SMBIOS_DATA pSMBIOS)
+{
+    LPBYTE ptr = (LPBYTE)(&pSMBIOS->SMBIOSTableData);
+    const LPBYTE pBIOSEnd = ptr + pSMBIOS->Length;
+    PSMBIOS_HEADER pHeader;
+
+    for (;;) {
+        pHeader = (PSMBIOS_HEADER)ptr;
+
+        if (pHeader->Type == 1)
+        {
+            PSMBIOS_SYSTEM_INFO pSystem = (PSMBIOS_SYSTEM_INFO)pHeader;
+            char* str = toPointString(pHeader);
+            return FindString(str, pSystem->ProductName);
+        }
+
+        if ((pHeader->Type == 127) && (pHeader->Length == 4))
+            break; // last avaiable tables
+
+        LPBYTE nextOffset = ptr + pHeader->Length; // point to struct end
+        while (0 != (*nextOffset | *(nextOffset + 1))) {
+            nextOffset++; // skip string area
+        }
+        nextOffset += 2;
+        if (nextOffset >= pBIOSEnd)
+            break;
+        ptr = nextOffset;
+    }
+    return strNull;
+}
+
+char* GetProcessorManufacturer(PRAW_SMBIOS_DATA pSMBIOS)
+{
+    LPBYTE ptr = (LPBYTE)(&pSMBIOS->SMBIOSTableData);
+    const LPBYTE pBIOSEnd = ptr + pSMBIOS->Length;
+    PSMBIOS_HEADER pHeader;
+
+    for (;;) {
+        pHeader = (PSMBIOS_HEADER)ptr;
+
+        if (pHeader->Type == 4)
+        {
+            PSMBIOS_PROCESSOR pSystem = (PSMBIOS_PROCESSOR)pHeader;
+            char* str = toPointString(pHeader);
+            return FindString(str, pSystem->Manufacturer);
+        }
+
+        if ((pHeader->Type == 127) && (pHeader->Length == 4))
+            break; // last avaiable tables
+
+        LPBYTE nextOffset = ptr + pHeader->Length; // point to struct end
+        while (0 != (*nextOffset | *(nextOffset + 1))) {
+            nextOffset++; // skip string area
+        }
+        nextOffset += 2;
+        if (nextOffset >= pBIOSEnd)
+            break;
+        ptr = nextOffset;
+    }
+    return strNull;
+}
+#endif

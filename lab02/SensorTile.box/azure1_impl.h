@@ -28,6 +28,12 @@ extern "C"
 #include "azure_c_shared_utility/threadapi.h"
 #include "parson.h"
 
+#ifdef WIN32
+#include <windows.h>
+#pragma pack(push) 
+#pragma pack(1)
+#endif
+
 /**
 * Type definition
 */
@@ -133,6 +139,7 @@ void ReportProperty_Succeeded_Callback(const char* interfaceName, const char* pr
 void ReportProperty_Error_Callback(const char* interfaceName, const char* propertyName);
 
 int InitializeSensorTile(const char* comPort);
+int Get_PresentationString(int hComm, int MaxLen, unsigned char* Buffer);
 
 #define TMsg_EOF     0xF0
 #define TMsg_BS      0xF1
@@ -244,6 +251,74 @@ typedef struct {
 SENSOR_DATA_CACHE SensorDataCache;
 
 #define FBufferMaxLen 2048
+
+#ifdef WIN32
+typedef struct _RAW_SMBIOS_DATA
+{
+    BYTE	Used20CallingMethod;
+    BYTE	SMBIOSMajorVersion;
+    BYTE	SMBIOSMinorVersion;
+    BYTE	DmiRevision;
+    DWORD	Length;
+    PBYTE	SMBIOSTableData;
+} RAW_SMBIOS_DATA, * PRAW_SMBIOS_DATA;
+
+typedef struct _SMBIOS_HEADER
+{
+    BYTE Type;
+    BYTE Length;
+    WORD Handle;
+}SMBIOS_HEADER, * PSMBIOS_HEADER;
+
+typedef struct _TYPE_0_ {
+    PSMBIOS_HEADER	Header;
+    UCHAR	Vendor;
+    UCHAR	Version;
+    UINT16	StartingAddrSeg;
+    UCHAR	ReleaseDate;
+    UCHAR	ROMSize;
+    ULONG64 Characteristics;
+    UCHAR	Extension[2]; // spec. 2.3
+    UCHAR	MajorRelease;
+    UCHAR	MinorRelease;
+    UCHAR	ECFirmwareMajor;
+    UCHAR	ECFirmwareMinor;
+} SMBIOS_BIOS_INFO, * PMBIOS_BIOS_INFO;
+
+typedef struct _TYPE_1_ {
+    SMBIOS_HEADER	Header;
+    UCHAR	Manufacturer;
+    UCHAR	ProductName;
+    UCHAR	Version;
+    UCHAR	SN;
+    UCHAR	UUID[16];
+    UCHAR	WakeUpType;
+    UCHAR	SKUNumber;
+    UCHAR	Family;
+} SMBIOS_SYSTEM_INFO, * PSMBIOS_SYSTEM_INFO;
+
+typedef struct _TYPE_4_ {
+    SMBIOS_HEADER Header;
+    UCHAR	SocketDesignation;
+    UCHAR	Type;
+    UCHAR	Family;
+    UCHAR	Manufacturer;
+    ULONG64 ID;
+    UCHAR	Version;
+    UCHAR	Voltage;
+    UINT16	ExtClock;
+    UINT16	MaxSpeed;
+    UINT16	CurrentSpeed;
+    // Todo, Here
+
+} SMBIOS_PROCESSOR, * PSMBIOS_PROCESSOR;
+
+RAW_SMBIOS_DATA* ReadSMBiosData();
+char* GetManufacturer(PRAW_SMBIOS_DATA pSMBIOS);
+char* GetSmbiosProductName(PRAW_SMBIOS_DATA pSMBIOS);
+char* GetSmbiosVersion(PRAW_SMBIOS_DATA pSMBIOS);
+char* GetProcessorManufacturer(PRAW_SMBIOS_DATA pSMBIOS);
+#endif
 
 #ifdef __cplusplus
 }
