@@ -9,5 +9,5 @@ Do this before the training
 1. Run :
 
 ```bash
-ssh "192.168.8.10" "cd ~/ && sudo apt-get update && sudo apt-get install -y git && git clone https://github.com/awaregroup/Intelligent-Edge-in-a-Day.git && cd Intelligent-Edge-in-a-Day && /bin/bash ./prep-rp4.sh"
+ssh "pi@192.168.8.10" "cd ~/ && sudo apt-get update && sudo apt-get install -y git && git clone https://github.com/awaregroup/Intelligent-Edge-in-a-Day.git && cd Intelligent-Edge-in-a-Day && /bin/bash ./prep-rp4.sh"
 ```
