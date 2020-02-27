@@ -26,7 +26,11 @@ Furthermore, with IoT Plug and Play, cloud solution can understand devices' capa
 > [!IMPORTANT]  
 > **In VSCode with Remote Connection to RP4**
 
-1. Copy and replace `main.c` from `DeviceFirstProvision`  
+> [!TIP]  
+> If you are interested in you can diff the code changes using VSCode's built-in diff function.  
+> [Running Code Diff](https://github.com/awaregroup/Intelligent-Edge-in-a-Day/blob/iotpnp-daisuke/lab02/media/code-diff.mp4)
+
+1. Copy and replace `main.c` from `DeviceFirst` folder  
 
     ```bash
     cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceFirst/main.c ~/Intelligent-Edge-in-a-Day/codegen1
