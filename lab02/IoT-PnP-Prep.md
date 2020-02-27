@@ -85,7 +85,7 @@ This is optional but highly recommended so you do not have to enter passwords re
     
     Replace `[RP4 IP Address]` with IP address of your RP4, then run following commands
     
-    When you are prompted for password, enter `raspbian` (case sensitive)
+    When you are prompted for password, enter `raspberry` (case sensitive)
 
     ```dos
     $REMOTEHOST="pi@[RP4 IP Address]"
