@@ -27,6 +27,6 @@ sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_wifi_country US
 sudo raspi-config nonint do_change_locale en_US.UTF-8
 sudo raspi-config nonint do_configure_keyboard us
-mac=$(ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+mac=$(/sbin/ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
 sudo raspi-config nonint do_hostname rp4-$mac
 sudo reboot now
