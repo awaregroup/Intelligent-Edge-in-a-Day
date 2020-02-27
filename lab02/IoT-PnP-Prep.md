@@ -181,10 +181,13 @@ Clone lab contents from Github to your development environment
     If you are still connected to RP4, disconnect from it
     ![VSCode-04-1](media/vscode-04-1.png)
 1. In VSCode, click on `Clone Repository` button  
-    If you do not see `Explorer` pane, click on ![VSCode-08](media/vscode-08.png) button on the top left corner.
-    or
-    Press `F1` key and search `Git: Clone`
-1. Enter `https://github.com/awaregroup/Intelligent-Edge-in-a-Day` and hit `enter` key
+    If you do not see `Explorer` pane, click on ![VSCode-08](media/vscode-08.png) button on the top left corner
+1. Enter URL in the command palette
+
+    ```bash
+    https://github.com/awaregroup/Intelligent-Edge-in-a-Day
+    ```
+
 1. Press `enter` key  
     ![VSCode-05](media/vscode-05.png)
 1. Select path where you want to clone the repo  
