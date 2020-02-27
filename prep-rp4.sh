@@ -4,7 +4,7 @@ sudo apt-get update && \
 sudo apt-get install -y git cmake build-essential curl libcurl4-openssl-dev libssl-dev uuid-dev curl && \
 # Clone Repo
 cd ~
-git clone https://github.com/awaregroup/Intelligent-Edge-in-a-Day.git && \
+# git clone https://github.com/awaregroup/Intelligent-Edge-in-a-Day.git && \
 cd ~/Intelligent-Edge-in-a-Day && \
 git clone https://github.com/Azure/azure-iot-sdk-c --recursive -b public-preview && \
 # Install IoT Edge
@@ -18,6 +18,7 @@ sudo apt-get install -y libssl1.0.2 && \
 sudo apt-get install -y moby-engine && \
 sudo apt-get install -y moby-cli && \
 sudo apt-get -y install iotedge && \
+sudo usermod -aG docker $USER && \
 # Setup Raspbian
 cd ~/ && \
 sudo raspi-config nonint do_expand_rootfs
