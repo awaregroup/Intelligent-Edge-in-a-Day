@@ -20,10 +20,6 @@ In [manual operation section](IoT-PnP-DeviceIdentity-Manual.md), you performed a
 
 If you have a device identity and a device template in your IoT Central please delete them.
 
-You may run `Cleanup IoT Central` collection in Postman or manually delete them in IoT Central.
-
-![postman-08](media/postman-08.png)
-
 ## Send RESTful API
 
 `Create Device Identity` Postman collection runs the first 2 operations.

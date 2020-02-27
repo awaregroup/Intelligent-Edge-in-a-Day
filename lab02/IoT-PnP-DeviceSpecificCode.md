@@ -48,7 +48,7 @@ To make your device app complete, we need to add code to these placeholder funct
 `lab02\DeviceSpecific` folder contains 4 files.  Replace source files from `lab02\DeviceSpecific` folder with :
 
 ```bash
-cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceSpecific/ ~/Intelligent-Edge-in-a-Day/codegen1
+cp ~/Intelligent-Edge-in-a-Day/lab02/DeviceSpecific/* ~/Intelligent-Edge-in-a-Day/codegen1
 ```
 
 ## Re-compile
