@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8b9d3bb1-492b-41ed-a96a-68546d2ca341",
+		"_postman_id": "8e227641-ffa0-49ae-b999-4cbc2a6ce05b",
 		"name": "IoT Central Preview",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -204,7 +204,64 @@
 			"response": []
 		},
 		{
-			"name": "Create Device",
+			"name": "List Device Templates",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{APIToken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/deviceTemplates/",
+					"protocol": "https",
+					"host": [
+						"{{Url}}",
+						"azureiotcentral",
+						"com"
+					],
+					"path": [
+						"api",
+						"preview",
+						"deviceTemplates",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Devices",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{APIToken}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{Url}}.azureiotcentral.com/api/preview/devices",
+					"protocol": "https",
+					"host": [
+						"{{Url}}",
+						"azureiotcentral",
+						"com"
+					],
+					"path": [
+						"api",
+						"preview",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device Identity",
 			"event": [
 				{
 					"listen": "test",
